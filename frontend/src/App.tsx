@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Feed from "./components/Feed";
 import Activity from "./components/Activity";
 import Log_in from "./components/Log_in";
@@ -8,23 +8,25 @@ import SearchBar from "./components/SearchBar";
 
 import "./App.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import axios from "axios";
 
 export let token = null as any;
 
 function App() {
   if (token === null && window.location.hash.length > 0) {
     const getTokenFromUrl = () => {
-      return window.location.hash
-        .substring(1)
-        .split("&")
-        .reduce((initial, item) => {
-          let parts = item.split("=");
-          Object.assign(initial, (parts[0], decodeURIComponent(parts[1])));
-          return initial;
-        }, {});
+      let access_token = window.location.hash.substring(1);
+      const pattern = "access_token=(.+)&token_type=.*";
+      const match = access_token.match(pattern);
+      if (match != null) return match[1];
     };
     token = getTokenFromUrl();
-    console.log(token);
+    axios
+      .get("http://localhost:8888/")
+      .then((response) => console.log(response))
+      .catch((error) => {
+        console.log("An error has occurred.");
+      });
   }
 
   return (

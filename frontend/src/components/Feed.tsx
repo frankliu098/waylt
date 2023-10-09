@@ -1,55 +1,30 @@
-import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  MotionValue,
-} from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import Image from "./Image";
 
-export default function Temp() {
+export default function Feed() {
+  const [songList, setSongList] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:8888/retrieveData").then((response: any) => {
+      setSongList(response.data);
+    });
+  });
   return (
     <div className="snap-y snap-mandatory h-screen w-screen overflow-scroll sm:-mt-24">
-      {[
-        {
-          username: "frank",
-          album: "Un Verano Sin Ti",
-          song: "Moscow Mule",
-          artist: "Bad Bunny",
-        },
-        {
-          username: "ivnnn",
-          album: "Mr. Morale & the Big Steppers",
-          song: "United in Grief",
-          artist: "Kendrick Lamar",
-        },
-        {
-          username: "teresa",
-          album: "Midnights",
-          song: "Lavendar Haze",
-          artist: "Taylor Swift",
-        },
-        {
-          username: "tzu",
-          album: "Harry's House",
-          song: "As it Was",
-          artist: "Harry Styles",
-        },
-        {
-          username: "viv",
-          album: "I Never Die",
-          song: "TOMBOY",
-          artist: "(G)I-DLE",
-        },
-      ].map((data) => (
-        <Image
-          username={data.username}
-          album={data.album}
-          song={data.song}
-          artist={data.artist}
-        />
-      ))}
+      {songList
+        .slice(0)
+        .reverse()
+        .map((feed: any) => (
+          <Image
+            username={feed.username}
+            album={feed.album}
+            song={feed.song}
+            artist={feed.artist}
+            uri={feed.uri}
+            url={feed.url}
+          />
+        ))}
     </div>
   );
 }
