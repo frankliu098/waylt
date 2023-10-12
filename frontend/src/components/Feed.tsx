@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "./Image";
 
@@ -9,14 +9,16 @@ export default function Feed() {
     axios.get("http://localhost:8888/retrieveData").then((response: any) => {
       setSongList(response.data);
     });
-  });
+  }, []);
+
   return (
     <div className="snap-y snap-mandatory h-screen w-screen overflow-scroll sm:-mt-24">
       {songList
         .slice(0)
         .reverse()
-        .map((feed: any) => (
+        .map((feed: any, index: number) => (
           <Image
+            key={index}
             username={feed.username}
             album={feed.album}
             song={feed.song}

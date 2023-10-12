@@ -1,8 +1,5 @@
-import { MotionConfig } from "framer-motion";
-import React, { useCallback, useState } from "react";
+import React, { useState, useCallback } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
-import { motion } from "framer-motion";
-import Navbar from "./Navbar";
 
 function Activity() {
   const [activeIndex, setActiveIndex] = useState(0);
